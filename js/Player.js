@@ -15,22 +15,7 @@ class Player {
         context.fillStyle = '#f20000'
         context.fillRect(this.x + 75 / 2 + 3, this.y + 75 / 2, 10, 10)
     }
-
-    move(borders, platform, key_released, context) {
-        if(key_released === "left" && this.x - this.dx >= borders[0]) {
-            //todo сделать отрисовку
-            this.x -= this.dx;
-        }
-        if(key_released === "right" && this.x + this.dx <= borders[3]) {
-            //todo сделать отрисовку
-            this.x += this.dx;
-        }
-        if(key_released === "up" && this.y - this.dy >= borders[1] && (this.x )) {
-            //todo сделать отрисовку
-            this.y -= this.dy;
-        }
-
-    }
+    
     atach(){
 
     }

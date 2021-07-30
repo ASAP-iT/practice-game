@@ -6,4 +6,5 @@ body{
     background-image: url(backgrounds/backgroundarenablue2.png);
     width: 1200px;
     margin: 0 auto;
+    border: 5px solid;
 }

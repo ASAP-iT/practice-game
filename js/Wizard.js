@@ -5,6 +5,7 @@ class Wizard {
         this.y = y
         this.dx = dx
         this.dy = dy
+        this.health = 100;
     }
 
     draw(z) {

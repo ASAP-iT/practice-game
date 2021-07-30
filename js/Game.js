@@ -5,16 +5,12 @@ function include(url) {
 }
 
 include("Wizard.js");
-// include("enemy.js");
-// include("bullet.js");
-// include("obstacle.js");
-// include("bosses.js");
+
 
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
 document.addEventListener('keydown', keyPressed);
 document.addEventListener('keyup', keyUnpressed);
-canvas.addEventListener("mousemove", checkPos);
 
 const LEFT_KEY = 65;
 const RIGHT_KEY = 68;

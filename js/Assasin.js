@@ -1,10 +1,10 @@
 class Assasin {
-
     constructor(x, y, dx, dy) {
         this.x = x
         this.y = y
         this.dx = dx
         this.dy = dy
+        this.health = 100;
     }
 
     draw(z) {

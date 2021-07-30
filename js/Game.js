@@ -1,20 +1,16 @@
 function include(url) {
     const script = document.createElement('script');
     script.src = url;
-    document.head.appendChild(script);
+    document.getElementsByTagName('head')[0].appendChild(script);
 }
-import "./Wizard.js";
+
 include("js/Wizard.js");
-
-
+import * as wizard from './Wizard.js';
 
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
 document.addEventListener('keydown', keyPressed);
 document.addEventListener('keyup', keyUnpressed);
-
-var pl = {x: 100, y: 300, dx: 10, dy: 10};
-var player = new Wizard(pl.x, pl.y, pl.dx, pl.dy);
 
 const LEFT_KEY = 65;
 const RIGHT_KEY = 68;
@@ -61,12 +57,8 @@ function keyUnpressed(event) {
         spaceKeyPressed = false;
     }
 }
-
 console.log("HUI");
-
-background.onload = function () {
-    game();
-}
+let player = new wizard.Wizard(0, 600, 10, 10);
 
 function game() {
     update();
@@ -74,6 +66,9 @@ function game() {
     requestAnimFrame(game);
 }
 
+background.onload = function () {
+    game();
+}
 
 function update() {
 
@@ -82,7 +77,7 @@ function update() {
 function render() {
 
     context.drawImage(background, 0, 0, 1200, 700);
-    // player.draw(0);
+    player.draw(context);
 }
 
 var requestAnimFrame = (function () {

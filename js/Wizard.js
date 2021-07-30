@@ -1,4 +1,4 @@
-class Wizard {
+export class Wizard {
 
     constructor(x, y, dx, dy) {
         this.x = x
@@ -8,7 +8,7 @@ class Wizard {
         this.health = 100;
     }
 
-    draw(z) {
+    draw(context) {
         let img = new Image();
         img.src = "playerAnim/WizardImg/mage.png";
         /*var pimg = new Image();

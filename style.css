@@ -1,7 +1,10 @@
 body{
-    background-size: cover;
-    background-image: url(background/backgroundarenablue2.png);
+    background-image: url(backgrounds/wall.jpg);
+    background-repeat: ;
 }
 #wrapper{
-    width: 900px;
+    background-size: cover;
+    background-image: url(backgrounds/backgroundarenablue2.png);
+    width: 1200px;
+    margin: 0 auto;
 }

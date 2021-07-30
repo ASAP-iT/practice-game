@@ -1,7 +1,3 @@
-// function sleep (time) {
-//     return new Promise((resolve) => setTimeout(resolve, time));
-// }
-
 export class Wizard {
 
     constructor(x, y, dx, dy) {
@@ -20,7 +16,6 @@ export class Wizard {
 
         let img = new Image();
         console.log(moveType);
-        // console.log(animStep);
         img.src = "playerAnim/WizardImg/mage1.png";
         if (is_reverse && moveType === "stay") {
             img.src = "playerAnim/WizardImg/mage_reversed.png";
@@ -31,15 +26,10 @@ export class Wizard {
                 img.src = "playerAnim/WizardImg/Run/run" + animStep + ".png"
             }
         }
-        context.drawImage(img, this.x, this.y, 75, 75)
+        if (moveType !== "attack") {
+            context.drawImage(img, this.x, this.y, 75, 75);
+        }
 
-
-        /*var pimg = new Image();
-        pimg.src = 'img/witch.gif';
-        context.drawImage(pimg, this.x, this.y, 75, 75);*/
-
-        // context.fillStyle = '#f20000'
-        // context.fillRect(this.x + 75 / 2 + 3, this.y + 75 / 2, 10, 10)
     }
 
     attackAnimation(context, is_reverse = false) {
@@ -48,8 +38,6 @@ export class Wizard {
             let img = new Image();
             img.src = "playerAnim/WizardImg/Attack/attack" + i + ".png";
             context.drawImage(img, this.x, this.y, 75, 75);
-            // sleep(500).then(r => {});
-
         }
     }
 }

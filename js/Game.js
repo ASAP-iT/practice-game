@@ -78,7 +78,6 @@ function movePlayer() {
     }
 }
 
-console.log("HUI");
 let player = new wizard.Wizard(0, 600, 6, 10);
 
 function game() {

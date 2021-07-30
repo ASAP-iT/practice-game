@@ -4,7 +4,7 @@ function include(url) {
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-include("Player.js");
+include("Wizard.js");
 // include("enemy.js");
 // include("bullet.js");
 // include("obstacle.js");

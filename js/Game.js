@@ -4,7 +4,6 @@ function include(url) {
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-include("js/Wizard.js");
 import * as wizard from './Wizard.js';
 
 const canvas = document.getElementById('game');
@@ -57,6 +56,16 @@ function keyUnpressed(event) {
         spaceKeyPressed = false;
     }
 }
+
+function movePlayer() {
+    if (leftKeyPressed && player.x - player.dx >= 0) {
+        player.x -= player.dx;
+    }
+    if (rightKeyPressed && player.x + player.dx <= (1200 - 60)) {
+        player.x += player.dx;
+    }
+}
+
 console.log("HUI");
 let player = new wizard.Wizard(0, 600, 10, 10);
 
@@ -71,6 +80,7 @@ background.onload = function () {
 }
 
 function update() {
+    movePlayer();
 
 }
 

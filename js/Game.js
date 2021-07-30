@@ -4,13 +4,18 @@ function include(url) {
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-include("Wizard.js");
 
 
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
 document.addEventListener('keydown', keyPressed);
 document.addEventListener('keyup', keyUnpressed);
+
+let pl = {x:100, y:-300, dx:10, dy:10}; //player param
+let wizard = new Wizard(pl.x, pl.y, pl.dx, pl.dy);
+let img = new Image()
+img.src = 'playerAnim/WizardImg/mage.png'
+wizard.draw(img)
 
 const LEFT_KEY = 65;
 const RIGHT_KEY = 68;

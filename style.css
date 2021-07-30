@@ -1,0 +1,7 @@
+body{
+    background-size: cover;
+    background-image: url(background/backgroundarenablue2.png);
+}
+#wrapper{
+    width: 900px;
+}

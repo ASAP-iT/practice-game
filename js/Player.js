@@ -16,7 +16,4 @@ class Player {
         context.fillRect(this.x + 75 / 2 + 3, this.y + 75 / 2, 10, 10)
     }
     
-    atach(){
-
-    }
 }

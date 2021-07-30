@@ -20,6 +20,7 @@ const LEFT_KEY = 65;
 const RIGHT_KEY = 68;
 const SPACE_KEY = 32;
 let rightKeyPressed, leftKeyPressed, spaceKeyPressed;
+let counter = 0;
 
 function keyPressed(event) {
 
@@ -31,6 +32,12 @@ function keyPressed(event) {
     }
     if (event.keyCode === SPACE_KEY) {
         spaceKeyPressed = true;
+        if (counter < 100) {
+            counter += 10;
+        }
+        else {
+            spaceKeyPressed = false;
+        }
     }
 
 }
@@ -42,7 +49,7 @@ function keyUnpressed(event) {
     if (event.keyCode === RIGHT_KEY) {
         rightKeyPressed = false;
     }
-    if (event.keyCode === SPACE_KEY) {
+    if (event.keyCode === SPACE_KEY && spaceKeyPressed === true) {
         spaceKeyPressed = false;
     }
 }

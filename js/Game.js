@@ -11,12 +11,14 @@ const context = canvas.getContext('2d');
 document.addEventListener('keydown', keyPressed);
 document.addEventListener('keyup', keyUnpressed);
 
+let animationStep = -2, playerAnimType = "stay";
+
 const LEFT_KEY = 65;
 const RIGHT_KEY = 68;
 const SPACE_KEY = 32;
 const ENTER_KEY = 13;
 let rightKeyPressed, leftKeyPressed, spaceKeyPressed, enterKeyPressed;
-let counter = 0;
+let counter = 0, reversed = false;
 const background = new Image();
 background.src = 'backgrounds/backgroundarenablue2.png';
 
@@ -52,22 +54,32 @@ function keyUnpressed(event) {
     if (event.keyCode === ENTER_KEY) {
         enterKeyPressed = false;
     }
-    if (event.keyCode === SPACE_KEY && spaceKeyPressed === true) {
+    if (event.keyCode === SPACE_KEY) {
         spaceKeyPressed = false;
     }
 }
 
 function movePlayer() {
+    if (!leftKeyPressed || !rightKeyPressed) {
+        playerAnimType = "stay";
+    }
     if (leftKeyPressed && player.x - player.dx >= 0) {
+        reversed = true;
+        playerAnimType = "run";
         player.x -= player.dx;
     }
     if (rightKeyPressed && player.x + player.dx <= (1200 - 60)) {
+        reversed = false;
+        playerAnimType = "run";
         player.x += player.dx;
+    }
+    if (spaceKeyPressed) {
+        playerAnimType = "attack";
     }
 }
 
 console.log("HUI");
-let player = new wizard.Wizard(0, 600, 10, 10);
+let player = new wizard.Wizard(0, 600, 6, 10);
 
 function game() {
     update();
@@ -87,7 +99,11 @@ function update() {
 function render() {
 
     context.drawImage(background, 0, 0, 1200, 700);
-    player.draw(context);
+    if (animationStep > 7) {
+        animationStep = 0;
+    }
+    animationStep++;
+    player.draw(context, reversed, animationStep, playerAnimType);
 }
 
 var requestAnimFrame = (function () {

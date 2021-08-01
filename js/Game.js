@@ -31,7 +31,6 @@ join.onclick = () => {
     Join()
 }
 
-let player = new wizard.Wizard(0, 600, 0, 0, PlayerID);
 let entities = []
 
 const LEFT_KEY = 65;
@@ -95,6 +94,11 @@ let controller = {
 const background = new Image();
 background.src = 'backgrounds/backgroundarenablue2.png';
 
+let platform_one = new platform.Platform(200, 450)
+let platform_two = new platform.Platform(400, 350)
+let platform_three = new platform.Platform(860, 450)
+let player = new wizard.Wizard(0, 600, 0, 0, PlayerID);
+let didMove;
 
 function game() {
     context.drawImage(background, 0, 0, 1200, 700);
@@ -187,22 +191,22 @@ function game() {
         context.drawImage(img, player.x, player.y, 75, 75);
     }
     window.requestAnimationFrame(playerMoving);
-    if (spaceKeyPressed) {
-        playerAnimType = "attack";
-    }
+    
 
     if (didMove) {
         WebSocketUpdatePlayer()
     }
-  
-  requestAnimationFrame(game);
-  requestAnimationFrame(playerMoving);
+
+    requestAnimationFrame(game);
+    requestAnimationFrame(playerMoving);
 }
 
 document.addEventListener('keydown', controller.keyListener);
 document.addEventListener('keyup', controller.keyListener);
 
-
+background.onload = function () {
+    game();
+}
 
 var requestAnimFrame = (function () {
     return window.requestAnimationFrame ||

@@ -1,6 +1,7 @@
 export class Wizard {
 
-    constructor(x, y, dx, dy) {
+    constructor(x, y, dx, dy, id) {
+        this.id = id
         this.x = x
         this.y = y
         this.dx = dx
@@ -10,7 +11,7 @@ export class Wizard {
         this.on_platform = false;
     }
 
-    draw(context, is_reverse = false, animStep = -1, moveType) {
+    draw(context, is_reverse = false, animStep = -1, moveType = "") {
 
         if (moveType === "attack") {
             this.attackAnimation(context, is_reverse);

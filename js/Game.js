@@ -30,6 +30,10 @@ let join = document.getElementById("join")
 join.onclick = () => {
     Join()
 }
+
+let player = new wizard.Wizard(0, 600, 0, 0, PlayerID);
+let entities = []
+
 const LEFT_KEY = 65;
 const RIGHT_KEY = 68;
 const JUMP_KEY = 32;
@@ -91,11 +95,6 @@ let controller = {
 const background = new Image();
 background.src = 'backgrounds/backgroundarenablue2.png';
 
-let platform_one = new platform.Platform(200, 450)
-let platform_two = new platform.Platform(400, 350)
-let platform_three = new platform.Platform(860, 450)
-let player = new wizard.Wizard(0, 600, 0, 0);
-
 
 function game() {
     context.drawImage(background, 0, 0, 1200, 700);
@@ -121,12 +120,16 @@ function game() {
 
         if (controller.left) {
             runFrame++;
+            didMove = true
             player.dx -= 0.65;
 
         }
 
+
         if (controller.right) {
+            runFrame++;
             player.dx += 0.65;
+            didMove = true
         }
 
         player.dy += 1.7;
@@ -184,15 +187,145 @@ function game() {
         context.drawImage(img, player.x, player.y, 75, 75);
     }
     window.requestAnimationFrame(playerMoving);
+    if (spaceKeyPressed) {
+        playerAnimType = "attack";
+    }
 
-
-    requestAnimationFrame(game);
-    requestAnimationFrame(playerMoving);
-}
-
-background.onload = function () {
-    game();
+    if (didMove) {
+        WebSocketUpdatePlayer()
+    }
+  
+  requestAnimationFrame(game);
+  requestAnimationFrame(playerMoving);
 }
 
 document.addEventListener('keydown', controller.keyListener);
 document.addEventListener('keyup', controller.keyListener);
+
+
+
+var requestAnimFrame = (function () {
+    return window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimatoinFrame ||
+        window.oRequestAnimationFrame ||
+        window.msRequestAnimatoinFrame ||
+        function (callback) {
+            window.setTimeout(callback, 1000 / 20);
+        };
+})();
+
+
+// ------------------------
+// WebSocket Stuff
+// ------------------------
+function CloseWebSocket() {
+    if (ws === null) {
+        return
+    }
+    ws.close()
+    ws = null
+}
+
+
+function WebSocketUpdatePlayer() {
+    if (ws === null) {
+        return
+    }
+
+    let data = {playerUpdate: {x: player.x, y: player.y}, playerId: PlayerID, gameId: GameID}
+    ws.send(JSON.stringify(data))
+}
+
+
+function StartWebSocket() {
+
+    // console.log("PLAYER ID:")
+    // console.log(PlayerID)
+    //
+    console.log("GAME ID:")
+    console.log(GameID)
+
+    if (ws === null) {
+        let url = `ws://${BaseURL}/connectToGame/${GameID}/${PlayerID}`
+        ws = new WebSocket(url)
+    } else {
+        ws.close()
+
+        let url = `ws://${BaseURL}/connectToGame/${GameID}/${PlayerID}`
+        ws = new WebSocket(url)
+    }
+
+    console.log(ws)
+
+    ws.onmessage = (event) => {
+        let eventData = event.data
+        let data = JSON.parse(eventData)
+        console.log(data)
+
+        // Load player data on connect
+        if (data.loadData !== undefined) {
+            let loadData = data.loadData
+            let players = loadData.players
+
+            players.forEach((playerId) => {
+                entities.push(new wizard.Wizard(0, 600, 6, 10, playerId))
+            })
+        }
+
+        // Player Connected
+        if (data.connectPlayer !== undefined) {
+            let playerId = data.connectPlayer
+            console.log(`PLAYER: ${playerId} Connected`)
+            entities.push(new wizard.Wizard(0, 600, 6, 10, playerId))
+        }
+
+        // Player Disconnected
+        if (data.disconnectPlayer !== undefined) {
+            let playerId = data.disconnectPlayer
+            console.log(`PLAYER: ${playerId} Disconnected`)
+            let index = entities.findIndex((p) => p.id === playerId)
+            if (index > -1) {
+                entities.splice(index, 1);
+            }
+        }
+
+        // Update Players
+        if (data.playerUpdate !== undefined) {
+            let playerId = Number(data.playerId)
+            let update = data.playerUpdate
+
+            let index = entities.findIndex((p) => p.id === playerId)
+            if (index > -1) {
+                let movingPlayer = entities[index]
+
+                // Move player
+                movingPlayer.x = update.x
+                movingPlayer.y = update.y
+            }
+        }
+    }
+}
+
+
+async function Host() {
+    GameID = Math.floor(Math.random() * 1000000)
+    localStorage.setItem("GameID", GameID.toString())
+
+    messageField.value = GameID
+
+    let url = `http://${BaseURL}/createGame/${GameID}`
+    let resp = await fetch(url)
+    console.log(resp)
+
+    StartWebSocket()
+}
+
+
+function Join() {
+    GameID = Number(messageField.value)
+    localStorage.setItem("GameID", GameID.toString())
+
+    StartWebSocket()
+}
+

@@ -10,6 +10,5 @@ export class Platform{
         let platformImg = new Image();
         platformImg.src = 'platformImg/Red_Brick_Platform.png';
         context.drawImage(platformImg, this.x, this.y, width, height);
-        // context.fillRect(this.x, this.y, 20, 100)
     }
 }

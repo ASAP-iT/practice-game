@@ -184,7 +184,7 @@ function game() {
 
         player.dx *= 0.9;
         player.dy *= 0.9;
-        // CHECK IS ON PLATFORM (150-330 (420), x-x , x-x)
+        // CHECK IS ON PLATFORM (150-330 (420), 810-980 (420) , 350-790 (320))
         if ((player.x >= 150 && player.x <= 330 && player.y < 420) || (player.x >= 810 && player.x <= 980 && player.y < 420) || (player.x >= 350 && player.x <= 790 && player.y < 320)) {
             player.on_platform = true;
             player.jumping = false;

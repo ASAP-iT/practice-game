@@ -9,7 +9,27 @@ import * as platform from './Platform.js'
 
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
+let BaseURL = "89.223.127.79:1231"
+let ws = null
 
+let PlayerID = Number(localStorage.getItem("PlayerID"))
+if (PlayerID === null || PlayerID === 0) {
+    PlayerID = Math.floor(Math.random() * 1000000)
+    localStorage.setItem("PlayerID", PlayerID.toString())
+}
+let GameID = Number(localStorage.getItem("GameID"))
+
+let messageField = document.getElementById("messageText")
+messageField.value = GameID
+
+let host = document.getElementById("host")
+host.onclick = async () => {
+    await Host()
+}
+let join = document.getElementById("join")
+join.onclick = () => {
+    Join()
+}
 const LEFT_KEY = 65;
 const RIGHT_KEY = 68;
 const JUMP_KEY = 32;
@@ -115,7 +135,7 @@ function game() {
         player.dx *= 0.9;
         player.dy *= 0.9;
         // CHECK IS ON PLATFORM
-        if (200 <= player.x && player.x <= 350 && player.y < 500 && player.on_platform === false){
+        if (200 <= player.x && player.x <= 350 && player.y < 500 && player.on_platform === false) {
             player.dy = 0;
             player.jumping = false;
             player.y = 500;

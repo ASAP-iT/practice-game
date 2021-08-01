@@ -4,11 +4,12 @@ function include(url) {
     document.getElementsByTagName('head')[0].appendChild(script);
 }
 
-import * as wizard from './Wizard.js';
+import * as wizard from './Wizard.js'
 import * as platform from './Platform.js'
+import * as sphere from './MagicSphere.js'
 
-const canvas = document.getElementById('game');
-const context = canvas.getContext('2d');
+const canvas = document.getElementById('game')
+const context = canvas.getContext('2d')
 let BaseURL = "89.223.127.79:1231"
 let ws = null
 
@@ -94,11 +95,36 @@ let controller = {
 const background = new Image();
 background.src = 'backgrounds/backgroundarenablue2.png';
 
+let spheres = []
+let cooldown = 0
 let platform_one = new platform.Platform(200, 450)
 let platform_two = new platform.Platform(400, 350)
 let platform_three = new platform.Platform(860, 450)
 let player = new wizard.Wizard(0, 600, 0, 0, PlayerID);
 let didMove;
+
+function shoot() {
+    if (cooldown <= 0) {
+        let bx = player.x;
+        let by = player.y;
+
+        let bullet = new sphere.MagicSphere(bx, by);
+
+        spheres.push(bullet);
+        cooldown = 20
+    }
+}
+
+function bulletsMove(side) {
+    for (let i in spheres) {
+        spheres[i].move(side);
+        spheres[i].draw(context)
+        if (spheres[i].outOfRange()) {
+            delete spheres[i];
+        }
+    }
+    spheres = spheres.filter(item => item !== undefined);
+}
 
 function game() {
     context.drawImage(background, 0, 0, 1200, 700);
@@ -106,7 +132,21 @@ function game() {
     platform_two.draw(context, 410, 100)
     platform_three.draw(context, 150, 100)
 
+    let spheresMoving = function () {
+        if (cooldown > 0) {
+            cooldown--
+        } else {
+            shoot()
+            if (viewToLeft) {
+                bulletsMove("left")
+            } else
+                bulletsMove("right")
+        }
+    }
+
     let playerMoving = function () {
+        let bullet = new Image()
+        bullet.src = 'playerAnim/WizardImg/Fire/fire1.png'
         let img = new Image();
         if (jumpFrame > 7) {
             jumpFrame = 0;
@@ -130,7 +170,6 @@ function game() {
             player.dx -= 0.65;
 
         }
-
 
         if (controller.right) {
             runFrame++;
@@ -195,12 +234,15 @@ function game() {
         } else if (playerAnimType === "attack") {
             if (viewToLeft) {
                 img.src = "playerAnim/WizardImg/Attack/attack" + attackFrame + "r.png"
+                spheresMoving()
             } else {
                 img.src = "playerAnim/WizardImg/Attack/attack" + attackFrame + ".png"
+                spheresMoving()
             }
         }
         context.drawImage(img, player.x, player.y, 75, 75);
     }
+
     window.requestAnimationFrame(playerMoving);
 
 
@@ -219,7 +261,7 @@ background.onload = function () {
     game();
 }
 
-var requestAnimFrame = (function () {
+let requestAnimFrame = (function () {
     return window.requestAnimationFrame ||
         window.webkitRequestAnimationFrame ||
         window.mozRequestAnimatoinFrame ||

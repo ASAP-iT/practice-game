@@ -191,7 +191,7 @@ function game() {
         context.drawImage(img, player.x, player.y, 75, 75);
     }
     window.requestAnimationFrame(playerMoving);
-    
+
 
     if (didMove) {
         WebSocketUpdatePlayer()

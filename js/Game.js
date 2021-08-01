@@ -117,9 +117,11 @@ function game() {
         if (attackFrame > 7) {
             attackFrame = 1;
         }
+
         if (controller.up && player.jumping === false) {
             player.dy -= 40;
             player.jumping = true;
+            console.log(player.y);
         }
 
         if (controller.left) {
@@ -135,19 +137,28 @@ function game() {
             player.dx += 0.65;
             didMove = true
         }
-
-        player.dy += 1.7;
+        if (!player.on_platform)
+            player.dy += 1.7;
         player.x += player.dx;
+        // if (player.on_platform)
         player.y += player.dy;
+
         player.dx *= 0.9;
         player.dy *= 0.9;
-        // CHECK IS ON PLATFORM
-        if (200 <= player.x && player.x <= 350 && player.y < 500 && player.on_platform === false) {
-            player.dy = 0;
-            player.jumping = false;
-            player.y = 500;
+        // CHECK IS ON PLATFORM (150-330 (420), x-x , x-x)
+        if ((player.x >= 150 && player.x <= 330 && player.y < 420) || (player.x >= 810 && player.x <= 980 && player.y < 420) || (player.x >= 350 && player.x <= 790 && player.y < 320)) {
             player.on_platform = true;
+            player.jumping = false;
+            player.dy = 0;
+            if (player.x >= 350 && player.x <= 790){
+                player.y = 320;
+            } else
+                player.y = 420;
+        } else if ((player.x < 150 || player.x > 330) && (player.x < 810 || player.x > 980) && (player.x < 350 || player.x > 790)) {
+            player.on_platform = false;
+            player.jumping = true;
         }
+
         if (player.y > 600) {
             player.jumping = false;
             player.y = 600;
@@ -167,7 +178,7 @@ function game() {
             if (viewToLeft) {
                 img.src = "playerAnim/WizardImg/mage_reversed.png";
             }
-        } else if (playerAnimType === "jump") {
+        } else if (player.jumping) {
             if (viewToLeft) {
                 img.src = "playerAnim/WizardImg/Jump/jump" + runFrame + "r.png"
             } else {

@@ -7,6 +7,8 @@ export class Wizard {
         this.dx = dx
         this.dy = dy
         this.health = 100;
+        this.jumping = false;
+        this.on_platform = false;
     }
 
     draw(context, is_reverse = false, animStep = -1, moveType = "") {
@@ -42,3 +44,4 @@ export class Wizard {
         }
     }
 }
+

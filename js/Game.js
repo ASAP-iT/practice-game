@@ -5,6 +5,7 @@ function include(url) {
 }
 
 import * as wizard from './Wizard.js';
+import * as platform from './Platform.js'
 
 const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
@@ -79,6 +80,9 @@ function movePlayer() {
 }
 
 let player = new wizard.Wizard(0, 600, 6, 10);
+let platform_one = new platform.Platform(200, 450)
+let platform_two = new platform.Platform(400, 350)
+let platform_three = new platform.Platform(860, 450)
 
 function game() {
     update();
@@ -103,6 +107,9 @@ function render() {
     }
     animationStep++;
     player.draw(context, reversed, animationStep, playerAnimType);
+    platform_one.draw(context, 150, 100)
+    platform_two.draw(context, 410, 100)
+    platform_three.draw(context, 150, 100)
 }
 
 var requestAnimFrame = (function () {

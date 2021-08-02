@@ -24,18 +24,4 @@ export class MagicSphere {
         return this.x > 1400 || this.x < 0
     }
 
-    // hasHitItem(item) {
-    //     return (this.x + 13 >= item.x && this.x <= item.x + 75) && (this.y + 13 >= item.y && this.y <= item.y + 75);
-    // }
-    //
-    // hasCollided() {
-    //     let self = this;
-    //     let collided = false;
-    //
-    //     if (self.hasHitItem()) {
-    //         // enemy.health -= 10
-    //         collided = true;
-    //     }
-    //     return collided
-    // }
 }

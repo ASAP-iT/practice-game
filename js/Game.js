@@ -244,6 +244,7 @@ function game() {
     }
 
     window.requestAnimationFrame(playerMoving);
+    window.requestAnimationFrame(bulletsMove)
 
 
     if (didMove) {
